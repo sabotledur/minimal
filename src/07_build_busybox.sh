@@ -2,6 +2,7 @@
 
 set -e
 
+
 # Load common properties and functions in the current script.
 . ./common.sh
 
@@ -39,11 +40,23 @@ fi
 # Now we tell BusyBox to use the sysroot area.
 sed -i "s|.*CONFIG_SYSROOT.*|CONFIG_SYSROOT=\"$SYSROOT\"|" .config
 
-# Compile busybox with optimization for "parallel jobs" = "number of processors".
-echo "Building BusyBox."
-make \
-  EXTRA_CFLAGS="$CFLAGS" \
-  busybox -j $NUM_JOBS
+# Read the 'FORCE_32_BIT_BINARIES' property from '.config'
+FORCE_32_BIT_BINARIES="$(grep -i ^FORCE_32_BIT_BINARIES $SRC_DIR/.config | cut -f2 -d'=')"
+
+if [ "$FORCE_32_BIT_BINARIES" = "true" ] ; then
+  # Compile BusyBox for 32-bit machines with optimization for
+  # "parallel jobs" = "number of processors".
+  echo "Building 32-bit BusyBox."
+  make \
+    EXTRA_CFLAGS="$CFLAGS" \
+    busybox -j $NUM_JOBS
+else
+  # Compile BusyBox with optimization for "parallel jobs" = "number of processors".
+  echo "Building BusyBox."
+  make \
+    EXTRA_CFLAGS="$CFLAGS" \
+    busybox -j $NUM_JOBS
+fi
 
 # Create the symlinks for busybox. The file 'busybox.links' is used for this.
 echo "Generating BusyBox based initramfs area."
