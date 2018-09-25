@@ -34,23 +34,22 @@ cd $GLIBC_OBJECTS
 # Read the 'FORCE_32_BIT_BINARIES' property from '.config'
 FORCE_32_BIT_BINARIES="$(grep -i ^FORCE_32_BIT_BINARIES $SRC_DIR/.config | cut -f2 -d'=')"
 
-if [ "$FORCE_32_BIT_BINARIES" = "true" ] ; then
-  # Create 32-bit configuration file for the GNU C library.
-  # On Ubuntu host machine this requires 'gcc-multilib'.
-  echo "Configuring 32-bit GNU C library."
-  $GLIBC_SRC/configure \
-    --build=i686-linux \
-    --host=i686-linux \
-    --prefix= \
-    --with-headers=$KERNEL_INSTALLED/include \
-    --without-gd \
-    --without-selinux \
-    --disable-werror \
-    CC="gcc -m32" \
-    CXX="g++ -m32" \
-    CFLAGS="$CFLAGS -march=i686" \ 
-    CXXFLAGS="$CFLAGS -march=i686"
-else
+# if [ "$FORCE_32_BIT_BINARIES" = "true" ] ; then
+  # # Create 32-bit configuration file for the GNU C library.
+  # # On Ubuntu host machine this requires 'gcc-multilib'.
+  # echo "Configuring 32-bit GNU C library."
+  # $GLIBC_SRC/configure \
+    # --build=x86_64-pc-linux-gnu \
+    # --host=i686-pc-linux-gnu \
+    # --prefix= \
+    # --with-headers=$KERNEL_INSTALLED/include \
+	# --without-selinux \
+	# --disable-werror \
+    # CC="gcc -m32" \
+    # CXX="g++ -m32" \
+    # CFLAGS="-O2 -march=i686" \ 
+    # CXXFLAGS="-O2 -march=i686"	
+# else
   echo "Configuring GNU C library."
   $GLIBC_SRC/configure \
     --prefix= \
@@ -60,7 +59,7 @@ else
     --disable-werror \
     CFLAGS="$CFLAGS" \
     CXXFLAGS="$CFLAGS"
-fi
+#fi
 
 # Compile glibc with optimization for "parallel jobs" = "number of processors".
 echo "Building GNU C library."

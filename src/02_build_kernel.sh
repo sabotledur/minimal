@@ -106,6 +106,7 @@ fi
 # http://unix.stackexchange.com/questions/5518/what-is-the-difference-between-the-following-kernel-makefile-terms-vmlinux-vmlinux
 echo "Building kernel."
 make \
+  ARCH=i386 \
   CFLAGS="$CFLAGS" \
   bzImage -j $NUM_JOBS
 
