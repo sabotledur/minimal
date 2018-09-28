@@ -43,7 +43,7 @@ else
 
   # Changes the name of the system to 'minimal'.
   sed -i "s/.*CONFIG_DEFAULT_HOSTNAME.*/CONFIG_DEFAULT_HOSTNAME=\"minimal\"/" .config
-
+  
   # Enable overlay support, e.g. merge ro and rw directories (3.18+).
   sed -i "s/.*CONFIG_OVERLAY_FS.*/CONFIG_OVERLAY_FS=y/" .config
 
@@ -52,6 +52,11 @@ else
 
   # Turn on inodes index feature by default (4.13+).
   echo "CONFIG_OVERLAY_FS_INDEX=y" >> .config
+
+# Turn on NTFS support.
+  echo "CONFIG_NTFS_FS=y" >> .config
+  echo "CONFIG_NTFS_DEBUG=y" >> .config
+  echo "CONFIG_NTFS_RW=y" >> .config
 
   # Follow redirects even if redirects are turned off (4.15+).
   echo "# CONFIG_OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW is not set" >> .config

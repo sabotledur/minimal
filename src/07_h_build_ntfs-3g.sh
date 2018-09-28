@@ -21,7 +21,7 @@ echo "prepare configure"
 ./configure
 
 echo "start make"
-make
+make -j $NUM_JOBS
 
 # Create the symlinks for ntfs-3g. The file 'ntfs-3g.links' is used for this.
 echo "Generating ntfs-3g based initramfs area."
